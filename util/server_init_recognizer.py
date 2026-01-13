@@ -20,6 +20,28 @@ def disable_jieba_debug():
 
 def init_recognizer(queue_in: Queue, queue_out: Queue, sockets_id):
 
+    # -----------------------------------------------------------
+    # 临时修复：确保子进程也能找到 NVIDIA 库
+    import os
+    import sys
+    from pathlib import Path
+    if sys.platform == 'linux':
+        site_packages = Path(sys.prefix) / 'lib' / f'python{sys.version_info.major}.{sys.version_info.minor}' / 'site-packages'
+        nvidia_path = site_packages / 'nvidia'
+        libs = [
+            nvidia_path / 'cudnn' / 'lib',
+            nvidia_path / 'cublas' / 'lib',
+            nvidia_path / 'cuda_runtime' / 'lib',
+        ]
+        current_ld_path = os.environ.get('LD_LIBRARY_PATH', '')
+        new_paths = []
+        for lib_dir in libs:
+            if lib_dir.exists() and str(lib_dir) not in current_ld_path:
+                new_paths.append(str(lib_dir))
+        if new_paths:
+            os.environ['LD_LIBRARY_PATH'] = ':'.join(new_paths) + ':' + current_ld_path
+    # -----------------------------------------------------------
+
     # Ctrl-C 退出
     signal.signal(signal.SIGINT, lambda signum, frame: exit())
 
