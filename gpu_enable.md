@@ -115,3 +115,10 @@ chmod +x run_gpu.sh
 
 **Q: 报错 `libcurand.so.10 not found` 或其他 `.so` 缺失**
 **A:** 说明缺少对应的 nvidia 库。检查步骤 2.3 是否安装了所有必要的包，特别是 `nvidia-curand-cu12` 和 `nvidia-cufft-cu12`。
+
+**Q: 客户端显示“服务端未连接”，服务端无报错但抓包显示连接被立即关闭 (RST/FIN)**
+**A:** 这是因为 `websockets` 库版本过高导致握手协议不兼容。
+**解决:** 必须降级 websockets 版本到 11.0 以下（推荐 10.4）：
+```bash
+pip install "websockets<11.0"
+```
