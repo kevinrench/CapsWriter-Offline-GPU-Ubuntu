@@ -122,3 +122,16 @@ chmod +x run_gpu.sh
 ```bash
 pip install "websockets<11.0"
 ```
+
+## 7. 智能粘贴快捷键
+
+自某版本起，客户端实现了智能粘贴功能，可以自动区分当前是在图形界面（GUI）应用还是终端（Terminal）环境，并使用相应的快捷键：
+- **GUI 应用 (如浏览器, 编辑器):** `Ctrl + V`
+- **终端环境 (如 GNOME Terminal, Konsole):** `Shift + Insert`
+
+此功能通过检测活动窗口的类别（Window Class）实现。它依赖于 `python-xlib` 库。
+
+如果你的环境中尚未安装，请执行：
+```bash
+pip install python-xlib
+```

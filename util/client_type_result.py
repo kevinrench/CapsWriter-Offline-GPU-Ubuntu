@@ -3,7 +3,7 @@ import keyboard
 import pyclip
 import platform
 import asyncio
-
+from Xlib import display
 
 async def type_result(text):
 
@@ -26,7 +26,17 @@ async def type_result(text):
             keyboard.release(55)
             keyboard.release(9)
         else:
-            keyboard.send('ctrl + v')
+            try:
+                d = display.Display()
+                window = d.get_input_focus().focus
+                wm_class = window.get_wm_class()
+                if wm_class and any(term in wm_class[1].lower() for term in ['terminal', 'konsole', 'xterm']):
+                    keyboard.send('shift + insert')
+                else:
+                    keyboard.send('ctrl + v')
+            except Exception:
+                keyboard.send('ctrl + v')
+
 
         # 还原剪贴板
         if Config.restore_clip:

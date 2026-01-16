@@ -14,7 +14,7 @@ class ServerConfig:
 
 # 客户端配置
 class ClientConfig:
-    addr = '127.0.0.1'          # Server 地址
+    addr = '10.66.66.3'          # Server 地址
     port = '6016'               # Server 端口
 
     shortcut     = 'caps lock'  # 控制录音的快捷键，默认是 CapsLock
